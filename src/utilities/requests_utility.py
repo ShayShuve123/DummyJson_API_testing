@@ -20,6 +20,14 @@ class RequestsUtility:
         # add logger
         return response.json()
 
+    def post(self, endpoint, payload=None, headers=None, expected_status_code=201):
+        assert isinstance(endpoint, str), f"Invalid endpoint, endpoint must be a string\nendpoint:{endpoint}"
+        url = self.base_url + endpoint
+        response = requests.post(url=url, json=payload, headers=headers)
+        self.validate_status_code(expected_status_code, response.status_code)
+        # add logger
+        return response.json()
+
     @staticmethod
     def validate_status_code(expected_status_code, status_code):
         assert expected_status_code == status_code, f"Unmatched status code, expected:{expected_status_code} actual:{status_code}"

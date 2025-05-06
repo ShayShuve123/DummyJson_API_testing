@@ -28,3 +28,7 @@ class ProductHelper:
         except KeyError:
             raise KeyError("Expected key 'products' not found in the response.")
 
+    def add_new_product(self,payload):
+        endpoint = "products/add"
+        product_response = self.requests_utils.post(endpoint=endpoint,payload=payload)
+        return product_response
