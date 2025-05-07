@@ -1,29 +1,6 @@
 import pytest
-
-from src.helpers.products_helper import ProductHelper
+import requests.exceptions
 from src.utilities.generic_utils import load_random_product_payload
-
-
-# pass to conftest
-@pytest.fixture
-def products_helper():
-    return ProductHelper()
-
-
-@pytest.fixture
-def product_payload_factory():
-    """Factory fixture to create a flexible payload of product."""
-
-    def _factory(**kwargs):
-        payload = {
-            "title": kwargs.get("title", None) or "default title",
-            "price": kwargs.get("price", None) or 50,
-            "category": kwargs.get("category", None) or "default category"
-        }
-
-        return payload
-
-    return _factory
 
 
 @pytest.mark.tid1
@@ -114,15 +91,60 @@ def test_add_new_product_with_invalid_keys(products_helper, product_payload_fact
     """A negative test that verifies that when attempting to add a product with keys that don't exist as valid product keys, the product is still created while the invalid keys are ignored."""
 
     product_payload = {
-        "pricee":1,
-        "":"empty"
+        "pricee": 1,
+        "": "empty"
     }
 
     # make a post call to add a new product
     product_response = products_helper.add_new_product(product_payload)
 
     # validate the response without get the product id from the server Note: "Adding a new product will not add it into the server."
-    assert len(product_response) == 1
+    assert len(product_response) == 1, f"The response continue more the one filed.\nResponse: {product_response}"
     assert "pricee" not in product_response
     assert "" not in product_response
 
+
+@pytest.mark.negative
+@pytest.mark.tid8
+def test_update_product_with_non_existent_id(products_helper):
+    random_payload = load_random_product_payload()
+    product_id = random_payload["id"]
+
+    with pytest.raises(requests.exceptions.HTTPError) as e:
+        products_helper.update_product(product_id=product_id, payload=random_payload)
+
+    assert f"'{product_id}' not found" in str(e.value)
+
+
+@pytest.mark.tid9
+def test_delete_product_successfully(products_helper):
+    # creat a new product and add it
+    random_payload = load_random_product_payload()
+    product_id = random_payload["id"]
+    product_title = random_payload["title"]
+    product_response = products_helper.add_new_product(random_payload)
+
+    assert isinstance(product_response["id"], int), "Invalid id, id must be an integer."
+    assert product_response["title"] == product_title
+
+    # make a call to delete the product
+    deleted_product = products_helper.delete_product(product_id)
+
+    # verify the response: 1)"isDeleted" should be "true" 2)the same id in the request
+    assert deleted_product
+    assert deleted_product["isDeleted"] == True, "Product deletion failed."
+    assert "deletedOn" in deleted_product, "Product deletion date is missing."
+    assert deleted_product[
+               "id"] == product_id, "The ID of the product to be deleted does not match the ID of the deleted product."
+
+
+@pytest.mark.negative
+@pytest.mark.tid10
+def test_delete_product_non_existent_id(products_helper):
+    product_id = -10
+
+    with pytest.raises(requests.exceptions.HTTPError) as e:
+        products_helper.delete_product(product_id)
+        assert f"'{product_id}' not found" in str(e)
+
+    assert f"'{product_id}' not found" in str(e.value)

@@ -19,7 +19,7 @@ def load_random_product_payload():
     except json.JSONDecodeError as e:
         raise ValueError(f"Invalid json file :{file_name}.\nError message: {e}")
 
-    if not payload or isinstance(payload,dict):
+    if not payload or isinstance(payload, dict):
         raise ValueError("Invalid payload, payload is empty or not a dictionary")
 
     return random.choice(payload)
