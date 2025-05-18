@@ -1,6 +1,6 @@
 import requests
 import os
-from dotenv import load_dotenv, dotenv_values
+from dotenv import load_dotenv
 
 from src.configs.hosts_config import DUMMY_JSON_API_BASE_URL
 

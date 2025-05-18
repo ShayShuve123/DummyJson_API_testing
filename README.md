@@ -5,6 +5,7 @@ A Pytest-based automation framework for testing the [DummyJSON](https://dummyjso
 ## 🚀 Project Overview
 
 This framework was built to simulate real-world QA practices in API testing:
+
 - Modular structure for easy scaling
 - Centralized request logic and reusable helpers
 - Separation between test logic and API logic
@@ -26,7 +27,7 @@ This framework was built to simulate real-world QA practices in API testing:
 │   │   └── hosts_config.py             # Environment-specific base URLs
 │   ├── helpers/
 │   │   ├── __init__.py
-│   │   └── products_helper.py          # Business logic for product API operations
+│   │   └── products_client.py          # Business logic for product API operations
 │   └── utilities/
 │       ├── __init__.py
 │       ├── requests_utility.py         # Generic HTTP methods (GET, POST, PUT, DELETE)
@@ -47,18 +48,21 @@ This framework was built to simulate real-world QA practices in API testing:
 ## ⚙️ Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/your-username/dummyjson-api-tests.git
 cd dummyjson-api-tests
 ```
 
 2. Create a virtual environment and activate it:
+
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows use: venv\Scripts\activate
 ```
 
 3. Install required packages:
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -66,21 +70,25 @@ pip install -r requirements.txt
 ## 🧪 Running Tests
 
 Run all tests:
+
 ```bash
 pytest
 ```
 
 Run only negative tests:
+
 ```bash
 pytest -m negative
 ```
 
 Run test by ID:
+
 ```bash
 pytest -m tid9
 ```
 
 Run tests using shell script:
+
 ```bash
 bash run_tests.sh
 ```

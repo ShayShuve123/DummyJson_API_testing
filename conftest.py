@@ -1,10 +1,11 @@
 import pytest
 
-from src.helpers.products_helper import ProductHelper
+from src.helpers.products_client import ProductHelper
+from src.utilities.requests_utility import RequestsUtility
 
 
 @pytest.fixture
-def products_helper():
+def products_helper(scope="session"):
     return ProductHelper()
 
 
