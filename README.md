@@ -28,6 +28,9 @@ This framework was built to simulate real-world QA practices in API testing:
 │   ├── helpers/
 │   │   ├── __init__.py
 │   │   └── products_client.py          # Business logic for product API operations
+├── │──paths/
+│   │    ├── __init__.py                # Re-exports path classes for easy import
+│   │    └── products.py                # Helper class that builds Product-related endpoints   
 │   └── utilities/
 │       ├── __init__.py
 │       ├── requests_utility.py         # Generic HTTP methods (GET, POST, PUT, DELETE)
