@@ -4,8 +4,8 @@ from src.helpers.products_client import ProductHelper
 from src.utilities.requests_utility import RequestsUtility
 
 
-@pytest.fixture
-def products_helper(scope="session"):
+@pytest.fixture(scope="session")
+def products_helper():
     return ProductHelper()
 
 
